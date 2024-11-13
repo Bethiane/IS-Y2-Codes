@@ -1,4 +1,6 @@
-Question 1: 
+// Question 1: In this question, we created a class called Loan with 3 instances cariables. After we created a constructor Loan for those variables using this keyword.
+We were able to setters and getters and the in the main method, we calculated the total amount by hardcoding the input parameters.
+
 
 package com.mycompany.oop;
 
@@ -6,6 +8,7 @@ package com.mycompany.oop;
  *
  * @author team B
  */
+
 //class
 public class Loan {
 
@@ -66,10 +69,13 @@ public class Loan {
 }
 
 
-Question 2:
+// Question 2: For this question, it wasn't easy for us to accomplish but finally we successfully executed it. The first thing was to start XAMPP and we manually created database 'school'.
+After that we started with classes. Here we created three diffrent classes to make things easier to us to understand. 
+The first class is Student.java. Within that class, we tested the connection to database and worked and after we created the table 'students' to be used in the task to store our data. That the only 
+thing done in this first class.
 
 
-Class One: Student.java
+// Class One: Student.java
 
 package com.mycompany.school.gui;
 
@@ -80,7 +86,7 @@ import java.sql.*;
  * @author team B
  */
 
-//This class initiated the connection to database and it created the table students in database school
+//This class initiated the connection to database and it creates the table students in database school
 
 public class Student {
 
@@ -120,7 +126,11 @@ public class Student {
 }
 
 
-Class 2 : StudentForm.java (This is a JFrame with a form to get the information of student from the user)
+
+//Class 2 : StudentForm.java (This is a JFrame with a form to get the information of student from the user).
+// For this class, we used java swing to create a graphical user interface form, we styled it by changing colors and fonts to make it beautify. When done, we then added functionalities. The task requested was
+to take the inputs entered by the user in the form and then store them into students table. We created method to take the inputs and that method was assigned to the submit button so that when they form is submitted,
+the data would be sent to our table in database.
 
 package com.mycompany.school.gui;
 
@@ -129,25 +139,25 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author HP
+ * @author team B
  */
 public class StudentForm extends javax.swing.JFrame {
 
     // Database connection parameters
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/school";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
+    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/school";
+    private static final String username = "root";
+    private static final String password = "";
     
     /**
      * Creates new form StudentForm
      */
     public StudentForm() {
         initComponents();
-        setupSubmitButton();
+        setupSubmitButton(); //for the submit button
     }
     
     private void setupSubmitButton() {
-        submit.addActionListener(new java.awt.event.ActionListener() {
+        submit.addActionListener(new java.awt.event.ActionListener() { //add an event listener which will submit the form
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitForm();
             }
@@ -382,7 +392,7 @@ public class StudentForm extends javax.swing.JFrame {
     
     
    
-    //SUBMITTING THE FORM
+    // a method to submit the form data
     private void submitForm() {
         // Collect form data
         String fname = firstname.getText().trim();
@@ -410,7 +420,7 @@ public class StudentForm extends javax.swing.JFrame {
         }
         String selectedModules = modules.length() > 0
                 ? modules.substring(0, modules.length() - 1) : "";
-        // Validate inputs
+        // Validate inputs to ensure that they are all required
         if (fname.isEmpty() || lname.isEmpty() || uni.isEmpty() || coll.isEmpty()
                 || sch.isEmpty() || dept.isEmpty() || yr.isEmpty() || reg.isEmpty()) {
             JOptionPane.showMessageDialog(this,
@@ -419,7 +429,7 @@ public class StudentForm extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        try (Connection conn = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+        try (Connection conn = DriverManager.getConnection(jdbcUrl, username, password)) {
             String sql = "INSERT INTO students (firstname, lastname, university, college, "
                     + "school, department, year, regnumber, modules) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -456,7 +466,7 @@ public class StudentForm extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }
-
+// once form is submitted then it will clear all data for the user to insert new inputs
     private void clearForm() {
         firstname.setText("");
         lastname.setText("");
@@ -497,6 +507,7 @@ public class StudentForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                        
 
+//this is a button that send us to a new page of viewing the inserted data(data in database)
     private void listbtnActionPerformed(java.awt.event.ActionEvent evt) {                                        
         StudentList sdnlist =new StudentList();
         StudentForm.this.setVisible(false);
@@ -568,7 +579,8 @@ public class StudentForm extends javax.swing.JFrame {
 }
 
 
-Third Class : StudentList.java (This is a JFrame with a table to display the information of student inserted into the database)
+Class Three : StudentList.java (This is a JFrame with a table to display the information of student inserted into the database). With the preparedstatement, we were able to retrieve that we submitted 
+to our database using the form. And with this class, we retrieved data and displayed in tabular form with attributes and from our PC, we have 4 rows affected and displayed in our table.
 
 package com.mycompany.school.gui;
 
@@ -578,20 +590,21 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author HP
+ * @author team B
  */
 public class StudentList extends javax.swing.JFrame {
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/school";
-    private static final String USER = "root";
-    private static final String PASS = "";
+
+    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/school";
+    private static final String username = "root";
+    private static final String password = "";
 
     /**
      * Creates new form StudentList
      */
     public StudentList() {
         initComponents();
-        loadStudentData();
+        loadStudentData(); //method to display our data
     }
 
     private void loadStudentData() {
@@ -600,7 +613,7 @@ public class StudentList extends javax.swing.JFrame {
 
         try {
             // Create database connection
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Connection conn = DriverManager.getConnection(jdbcUrl, username, password);
 
             // Create SQL query
             String sql = "SELECT id, firstname, lastname, university, college, school, department, year, regnumber, modules FROM students";
@@ -608,7 +621,7 @@ public class StudentList extends javax.swing.JFrame {
             // Create statement and execute query
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-// Iterate over result set and add rows to table model
+            // Iterate over result set and add rows to table model
             while (rs.next()) {
                 Object[] row = {
                     rs.getInt("id"),
@@ -723,6 +736,7 @@ public class StudentList extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
+    // a button to go back to our form
     private void addbtnActionPerformed(java.awt.event.ActionEvent evt) {                                       
         StudentForm sdnform =new StudentForm();
         StudentList.this.setVisible(false);
